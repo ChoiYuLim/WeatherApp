@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="시군구별 관광 기후 지수 조회"
+        android:text="서울 시군구별 관광 기후 지수 조회"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -20,12 +20,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_do"
+        android:id="@+id/tv_sigungu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="50dp"
-        android:text="도 단위"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:text="시군구"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -33,49 +33,18 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <EditText
-        android:id="@+id/et_do"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:ems="10"
-        android:hint="서울"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_do"
-        app:layout_constraintStart_toEndOf="@+id/tv_do"
-        app:layout_constraintTop_toTopOf="@+id/tv_do" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_do"
+        android:id="@+id/et_sigungu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/et_do"
-        app:layout_constraintStart_toStartOf="@+id/et_do"
-        app:layout_constraintTop_toBottomOf="@+id/et_do" />
-
-    <TextView
-        android:id="@+id/tv_sigungu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="시군구"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/tv_do"
-        app:layout_constraintTop_toBottomOf="@+id/tv_do" />
-
-    <EditText
-        android:id="@+id/et_sigungu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="40dp"
         android:ems="10"
         android:hint="강남구"
         android:inputType="textPersonName"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/tv_sigungu"
-        app:layout_constraintStart_toStartOf="@+id/et_do"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_sigungu"
         app:layout_constraintTop_toTopOf="@+id/tv_sigungu" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -85,7 +54,19 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/et_sigungu"
         app:layout_constraintStart_toStartOf="@+id/et_sigungu"
-        app:layout_constraintTop_toBottomOf="@+id/et_sigungu" />
+        app:layout_constraintTop_toBottomOf="@+id/et_sigungu" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="조회하기"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sigungu" />
 
     <TextView
         android:id="@+id/tv_indices"
@@ -97,7 +78,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tv_sigungu"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sigungu" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_search" />
 
     <TextView
         android:id="@+id/tv_weather_indices"
