@@ -40,19 +40,23 @@ class MainActivity : AppCompatActivity() {
     private fun initListener() {
         binding.etSigungu.setOnFocusChangeListener { it, hasFocus ->
             if (hasFocus) {
-                binding.rvSigungu.visibility = View.VISIBLE
-                binding.btnSearch.visibility = View.INVISIBLE
+                showrv()
             } else {
-                binding.rvSigungu.visibility = View.INVISIBLE
-                binding.btnSearch.visibility = View.VISIBLE
+                hiderv()
             }
+        }
+
+        // 람다식을 이용해서 setOnEditorActionListener를 사용하는 방법
+        binding.etSigungu.setOnEditorActionListener { textView, i, keyEvent ->
+            hiderv()
+            binding.etSigungu.clearFocus()
+            false // 람다식에서는 반환값에 return을 쓰지 않는다.
         }
 
         binding.btnSearch.setOnClickListener {
             if (!sigunguMap.contains(binding.etSigungu.text.toString())) {
                 Toast.makeText(applicationContext, "존재하지 않는 시군구입니다.", Toast.LENGTH_SHORT).show()
-                binding.tvWeatherIndices.text = ""
-                binding.tvWeatherLevel.text = ""
+                cleartv()
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
                     try {
@@ -70,8 +74,7 @@ class MainActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         Toast.makeText(applicationContext, "인터넷 연결을 확인해주세요", Toast.LENGTH_SHORT)
                             .show()
-                        binding.tvWeatherIndices.text = ""
-                        binding.tvWeatherLevel.text = ""
+                        cleartv()
                     }
                 }
             }
@@ -91,6 +94,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         sigungu_adapter.notifyDataSetChanged()
+    }
+
+    private fun showrv() {
+        binding.rvSigungu.visibility = View.VISIBLE
+        binding.btnSearch.visibility = View.INVISIBLE
+    }
+
+    private fun hiderv() {
+        binding.rvSigungu.visibility = View.INVISIBLE
+        binding.btnSearch.visibility = View.VISIBLE
+    }
+
+    private fun cleartv() {
+        binding.tvWeatherIndices.text = ""
+        binding.tvWeatherLevel.text = ""
     }
 
     private fun initMap() {
