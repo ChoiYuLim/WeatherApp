@@ -1,16 +1,16 @@
 package com.yulim.weatherapp.controller
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.yulim.weatherapp.BuildConfig.serviceKey
 import com.yulim.weatherapp.databinding.ActivityMainBinding
 import com.yulim.weatherapp.model.RetrofitBuilder
-import com.yulim.weatherapp.sigunguAdapter
-import com.yulim.weatherapp.sigunguData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +19,6 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
-    private lateinit var sigungu_adapter: sigunguAdapter
     private lateinit var binding: ActivityMainBinding
 
     val sigunguMap: MutableMap<String, String> = mutableMapOf()
@@ -38,17 +37,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListener() {
-        binding.etSigungu.setOnFocusChangeListener { it, hasFocus ->
-            if (hasFocus) {
-                showrv()
-            } else {
-                hiderv()
-            }
-        }
-
         // 람다식을 이용해서 setOnEditorActionListener를 사용하는 방법
         binding.etSigungu.setOnEditorActionListener { textView, i, keyEvent ->
-            hiderv()
             binding.etSigungu.clearFocus()
             false // 람다식에서는 반환값에 return을 쓰지 않는다.
         }
@@ -77,33 +67,23 @@ class MainActivity : AppCompatActivity() {
                         cleartv()
                     }
                 }
+                val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.etSigungu.windowToken, 0)
             }
-
         }
     }
 
     private fun initAdapter() {
-        sigungu_adapter = sigunguAdapter()
-
-        binding.rvSigungu.adapter = sigungu_adapter
-
+        var items = arrayListOf<String>()
         for (key in sigunguMap.keys) {
-            sigungu_adapter.sigunguList.add(
-                sigunguData(key)
-            )
+            items.add(key)
         }
-
-        sigungu_adapter.notifyDataSetChanged()
-    }
-
-    private fun showrv() {
-        binding.rvSigungu.visibility = View.VISIBLE
-        binding.btnSearch.visibility = View.INVISIBLE
-    }
-
-    private fun hiderv() {
-        binding.rvSigungu.visibility = View.INVISIBLE
-        binding.btnSearch.visibility = View.VISIBLE
+        var adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_dropdown_item_1line,
+            items
+        )
+        binding.etSigungu.setAdapter(adapter)
     }
 
     private fun cleartv() {
