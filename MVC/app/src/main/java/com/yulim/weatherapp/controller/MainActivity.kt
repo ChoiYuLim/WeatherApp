@@ -49,25 +49,33 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnSearch.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                try {
-                    val info = RetrofitBuilder.mainService.getTourismClimate(
-                        serviceKey = serviceKey,
-                        1,
-                        1,
-                        "JSON",
-                        formatted,
-                        0,
-                        sigunguMap[binding.etSigungu.text.toString()].toString()
-                    ).body()!!.response.body.items.item
-                    binding.tvWeatherIndices.text = info[0].kmaTci
-                    binding.tvWeatherLevel.text = info[0].tciGrade.toString()
-                } catch (e: Exception) {
-                    Toast.makeText(applicationContext, "존재하지 않는 시군구입니다.", Toast.LENGTH_SHORT).show()
-                    binding.tvWeatherIndices.text = ""
-                    binding.tvWeatherLevel.text = ""
+            if (!sigunguMap.contains(binding.etSigungu.text.toString())) {
+                Toast.makeText(applicationContext, "존재하지 않는 시군구입니다.", Toast.LENGTH_SHORT).show()
+                binding.tvWeatherIndices.text = ""
+                binding.tvWeatherLevel.text = ""
+            } else {
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        val info = RetrofitBuilder.mainService.getTourismClimate(
+                            serviceKey = serviceKey,
+                            1,
+                            1,
+                            "JSON",
+                            formatted,
+                            0,
+                            sigunguMap[binding.etSigungu.text.toString()].toString()
+                        ).body()!!.response.body.items.item
+                        binding.tvWeatherIndices.text = info[0].kmaTci
+                        binding.tvWeatherLevel.text = info[0].tciGrade.toString()
+                    } catch (e: Exception) {
+                        Toast.makeText(applicationContext, "인터넷 연결을 확인해주세요", Toast.LENGTH_SHORT)
+                            .show()
+                        binding.tvWeatherIndices.text = ""
+                        binding.tvWeatherLevel.text = ""
+                    }
                 }
             }
+
         }
     }
 
